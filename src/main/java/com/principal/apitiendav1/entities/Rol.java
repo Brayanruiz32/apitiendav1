@@ -23,7 +23,7 @@ public class Rol extends Auditoria{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String nombre;
 
     @Enumerated(EnumType.STRING)
     private Permiso permiso;
