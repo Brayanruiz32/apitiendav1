@@ -1,46 +1,75 @@
 package com.principal.apitiendav1.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.principal.apitiendav1.dto.usuario.UsuarioDTO;
 import com.principal.apitiendav1.dto.usuario.UsuarioRequestDTO;
+import com.principal.apitiendav1.entities.Rol;
+import com.principal.apitiendav1.entities.Usuario;
+import com.principal.apitiendav1.repositories.RolRepository;
+import com.principal.apitiendav1.repositories.UsuarioRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+@Service
 public class UsuarioService implements IServices<UsuarioDTO, UsuarioRequestDTO>  {
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private RolRepository rolRepository;
 
     @Override
     public UsuarioDTO actualizarRegistro(Long id, UsuarioRequestDTO datosRegistro) {
-        // TODO Auto-generated method stub
-        return null;
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        usuario.setUsuario(datosRegistro.getUsuario());
+        usuario.setContrasenia(datosRegistro.getContrasenia());
+        //Setear el rol 
+        if (datosRegistro.getRol() == null) {
+            throw new IllegalArgumentException("No puede ser nulo el Rol");
+        }
+        Rol rol = rolRepository.findById(datosRegistro.getRol().getId()).orElseThrow(()-> new EntityNotFoundException());
+        usuario.setRol(rol);
+        UsuarioDTO usuarioDTO = modelMapper.map(usuarioRepository.save(usuario), UsuarioDTO.class);
+        return usuarioDTO;
     }
 
     @Override
     public void eliminarRegistro(Long id) {
-        // TODO Auto-generated method stub
-        
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        usuario.setDeletedAt(LocalDateTime.now());
+        usuarioRepository.save(usuario);
     }
 
     @Override
     public UsuarioDTO encontrarRegistro(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        return modelMapper.map(usuario, UsuarioDTO.class);
     }
 
     @Override
     public UsuarioDTO guardarRegistro(UsuarioRequestDTO nuevoRegistro) {
-        // TODO Auto-generated method stub
-        return null;
+        Usuario nuevoUsuario = modelMapper.map(nuevoRegistro, Usuario.class);
+        UsuarioDTO usuarioDTO = modelMapper.map(usuarioRepository.save(nuevoUsuario), UsuarioDTO.class);
+        return usuarioDTO;
     }
 
     @Override
     public List<UsuarioDTO> listarRegistros() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        List<UsuarioDTO> usuarioDTOs = usuarios.stream().map(u -> modelMapper.map(u, UsuarioDTO.class)).toList();
+        return usuarioDTOs;
     }
 
     @Override
     public List<UsuarioDTO> listarRegistrosDisponibles() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Usuario> usuarios = usuarioRepository.findByDeletedAtNull();
+        List<UsuarioDTO> usuarioDTOs = usuarios.stream().map(u -> modelMapper.map(u, UsuarioDTO.class)).toList();
+        return usuarioDTOs;
     }
 
     
