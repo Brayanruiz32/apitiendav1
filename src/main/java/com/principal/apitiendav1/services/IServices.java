@@ -11,11 +11,13 @@ public interface IServices<T, E> {
     T encontrarRegistro(Long id);
 
     List<T> listarRegistros();
+
+    List<T> listarRegistrosDisponibles();
         
     T guardarRegistro(E nuevoRegistro);
 
-    T actualizarRegistro(Long id, T datosRegistro);
+    T actualizarRegistro(Long id, E datosRegistro);
 
-    void eliminarRegistro();
+    void eliminarRegistro(Long id);
 
 }
