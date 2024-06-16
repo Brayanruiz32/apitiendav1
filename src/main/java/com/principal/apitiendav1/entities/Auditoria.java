@@ -16,7 +16,7 @@ import lombok.Setter;
 public class Auditoria {
 
     @Column(nullable = false, updatable = false)
-    @CreatedDate
+    @CreatedDate()
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
