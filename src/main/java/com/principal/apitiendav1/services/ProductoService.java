@@ -71,7 +71,4 @@ public class ProductoService implements IServices<ProductoDTO, ProductoRequestDT
         List<ProductoDTO> productoDTOs = productos.stream().map(p -> modelMapper.map(p, ProductoDTO.class)).collect(Collectors.toList());
         return productoDTOs;
     }
-
-    
-
 }

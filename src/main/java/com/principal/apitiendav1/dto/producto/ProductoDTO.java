@@ -18,5 +18,6 @@ public class ProductoDTO {
     private String descripcion;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
     private CategoriaDTO categoria;
 }
