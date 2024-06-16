@@ -1,7 +1,5 @@
 package com.principal.apitiendav1.dto.usuario;
 
-import java.time.LocalDateTime;
-
 import com.principal.apitiendav1.dto.rol.RolDTO;
 
 import lombok.AllArgsConstructor;
