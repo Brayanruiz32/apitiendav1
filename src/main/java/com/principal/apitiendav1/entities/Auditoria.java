@@ -23,6 +23,7 @@ public class Auditoria {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    private LocalDateTime deletedAt;
+    @Column(nullable = true)
+    private LocalDateTime deletedAt = null;
 
 }

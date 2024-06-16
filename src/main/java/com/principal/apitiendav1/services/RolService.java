@@ -1,5 +1,7 @@
 package com.principal.apitiendav1.services;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,18 @@ public class RolService implements IServices<RolDTO, RolRequestDTO> {
 
     @Override
     public RolDTO actualizarRegistro(Long id, RolRequestDTO datosRegistro) {
-
-        return null;
+        Rol rol = rolRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        rol.setNombre(datosRegistro.getNombre());
+        rol.setPermisos(datosRegistro.getPermisos());
+        RolDTO rolDTO = modelMapper.map(rolRepository.save(rol), RolDTO.class);
+        return rolDTO;
     }
 
     @Override
     public void eliminarRegistro(Long id) {
-        
+        Rol rol = rolRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        rol.setDeletedAt(LocalDateTime.now());
+        rolRepository.save(rol);
     }
 
     @Override
