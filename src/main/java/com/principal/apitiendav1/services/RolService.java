@@ -61,8 +61,4 @@ public class RolService implements IServices<RolDTO, RolRequestDTO> {
         List<RolDTO> rolDTOs = roles.stream().map(r -> modelMapper.map(r, RolDTO.class)).toList();
         return rolDTOs;
     }
-
-    
-
-
 }

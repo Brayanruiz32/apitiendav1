@@ -56,8 +56,4 @@ public class UsuarioController implements IControllers<UsuarioDTO, UsuarioReques
     public List<UsuarioDTO> listarDisponibles() {
         return usuarioService.listarRegistrosDisponibles();
     }
-
-    
-
-
 }
