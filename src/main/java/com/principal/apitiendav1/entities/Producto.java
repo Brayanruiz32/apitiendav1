@@ -1,5 +1,7 @@
 package com.principal.apitiendav1.entities;
 
+import java.math.BigDecimal;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Entity;
@@ -9,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,8 +34,13 @@ public class Producto extends Auditoria {
     private String nombre;
     private int stock;
     private String descripcion;
-
+    private BigDecimal precio;
+    
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
+
+    // @OneToMany
+    // @JoinColumn(name = "")
+    // private VentaProducto ventaProducto;
 }
