@@ -1,9 +1,12 @@
 package com.principal.apitiendav1.services;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import com.principal.apitiendav1.dto.producto.ProductoDTO;
@@ -90,12 +93,23 @@ public class VentaService implements IServices<VentaDTO, VentaRequestDTO> {
 
     @Override
     public void eliminarRegistro(Long id) {
-        
+        Venta venta = ventaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        venta.setDeletedAt(LocalDateTime.now());
+        ventaRepository.save(venta);
     }
 
     @Override
     public VentaDTO encontrarRegistro(Long id) {
-        return null;
+        Venta venta = ventaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        Usuario usuario = usuarioRepository.findById(venta.getUsuario().getId()).orElseThrow();
+        UsuarioDTO usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
+        VentaDTO ventaDTO = modelMapper.map(venta, VentaDTO.class);
+        List<VentaProducto> ventasProductos = ventaProductoRepository.findByIdVentaId(venta.getId());
+        List<VentaProductoDTO> ventaProductoDTOs = ventasProductos.stream().map(vp -> modelMapper.map(vp, VentaProductoDTO.class))
+        .toList();
+        ventaDTO.setUsuarioDTO(usuarioDTO);
+        ventaDTO.setProductosVentasDtos(ventaProductoDTOs);
+        return ventaDTO;
     }
 
     @Override
@@ -154,7 +168,11 @@ public class VentaService implements IServices<VentaDTO, VentaRequestDTO> {
         for (Venta venta : ventas) {
             UsuarioDTO usuarioDTO = modelMapper.map(venta.getUsuario(), UsuarioDTO.class);
             VentaDTO ventaDTO = modelMapper.map(venta, VentaDTO.class);
+            List<VentaProducto> ventasProductos = ventaProductoRepository.findByIdVentaId(venta.getId());
+            List<VentaProductoDTO> ventaProductoDTOs = ventasProductos.stream().map(vp -> modelMapper.map(vp, VentaProductoDTO.class))
+            .toList();
             ventaDTO.setUsuarioDTO(usuarioDTO);
+            ventaDTO.setProductosVentasDtos(ventaProductoDTOs);
             ventaDTOs.add(ventaDTO);
         }
 
@@ -169,7 +187,11 @@ public class VentaService implements IServices<VentaDTO, VentaRequestDTO> {
         for (Venta venta : ventas) {
             UsuarioDTO usuarioDTO = modelMapper.map(venta.getUsuario(), UsuarioDTO.class);
             VentaDTO ventaDTO = modelMapper.map(venta, VentaDTO.class);
+            List<VentaProducto> ventasProductos = ventaProductoRepository.findByIdVentaId(venta.getId());
+            List<VentaProductoDTO> ventaProductoDTOs = ventasProductos.stream().map(vp -> modelMapper.map(vp, VentaProductoDTO.class))
+            .toList();
             ventaDTO.setUsuarioDTO(usuarioDTO);
+            ventaDTO.setProductosVentasDtos(ventaProductoDTOs);
             ventaDTOs.add(ventaDTO);
         }
         return ventaDTOs;

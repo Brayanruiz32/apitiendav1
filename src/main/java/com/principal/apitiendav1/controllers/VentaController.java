@@ -3,6 +3,7 @@ package com.principal.apitiendav1.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,7 +33,7 @@ public class VentaController implements IControllers<VentaDTO, VentaRequestDTO> 
         return ventaService.guardarRegistro(nuevoRegistro);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     @Override
     public void eliminar(Long id) {
         ventaService.eliminarRegistro(id);
