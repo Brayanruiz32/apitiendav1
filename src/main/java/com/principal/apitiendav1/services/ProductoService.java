@@ -31,6 +31,7 @@ public class ProductoService implements IServices<ProductoDTO, ProductoRequestDT
         producto.setDescripcion(datosRegistro.getDescripcion());
         producto.setNombre(datosRegistro.getNombre());
         producto.setStock(datosRegistro.getStock());
+        producto.setPrecio(datosRegistro.getPrecio());
         //verificar la categoria
         Categoria categoriaEncontrada = categoriaRepository.findById(datosRegistro.getCategoria().getId()).orElseThrow(() -> new EntityNotFoundException());
         producto.setCategoria(categoriaEncontrada);

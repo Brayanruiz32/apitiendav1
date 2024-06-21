@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
+
 @Entity
 @Data
 @Table(name = "venta_productos")
@@ -35,4 +36,13 @@ public class VentaProducto {
     @MapsId("productoId")
     @JoinColumn(name = "producto_id")
     private Producto producto;
+
+    @Override
+    public String toString() {
+        return "VentaProducto [id=" + id + ", cantidad=" + cantidad + ", precio=" + precio + ", subtotal=" + subtotal
+                +"]";
+    }
+
+    
+
 }

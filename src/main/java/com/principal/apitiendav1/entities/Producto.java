@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +34,7 @@ public class Producto extends Auditoria {
     private int stock;
     private String descripcion;
     private BigDecimal precio;
-    
+
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;

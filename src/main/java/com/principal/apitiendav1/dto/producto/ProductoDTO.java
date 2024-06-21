@@ -1,5 +1,6 @@
 package com.principal.apitiendav1.dto.producto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.principal.apitiendav1.dto.categoria.CategoriaDTO;
@@ -16,6 +17,7 @@ public class ProductoDTO {
     private String nombre;
     private int stock;
     private String descripcion;
+    private BigDecimal precio;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
