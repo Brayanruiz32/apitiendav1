@@ -1,7 +1,5 @@
 package com.principal.apitiendav1.dto.producto;
 
-import java.math.BigDecimal;
-
 import com.principal.apitiendav1.entities.VentaProductoId;
 
 import lombok.AllArgsConstructor;

@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.principal.apitiendav1.dto.producto.ProductoDTO;
 import com.principal.apitiendav1.dto.producto.VentaProductoDTO;
 import com.principal.apitiendav1.dto.usuario.UsuarioDTO;
 import com.principal.apitiendav1.entities.EstadoVenta;

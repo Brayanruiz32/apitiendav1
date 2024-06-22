@@ -12,8 +12,6 @@ import com.principal.apitiendav1.entities.Producto;
 import com.principal.apitiendav1.entities.Venta;
 import com.principal.apitiendav1.entities.VentaProducto;
 import com.principal.apitiendav1.repositories.ProductoRepository;
-import com.principal.apitiendav1.repositories.VentaProductoRepository;
-
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -21,10 +19,6 @@ public class VentaProductoService {
 
     @Autowired
     private ProductoRepository productoRepository;
-
-    @Autowired
-    private VentaProductoRepository ventaProductoRepository;
-
 
     public List<VentaProducto> crearVentasProductos(List<VentaProductoDTO> lista, Venta venta){
 

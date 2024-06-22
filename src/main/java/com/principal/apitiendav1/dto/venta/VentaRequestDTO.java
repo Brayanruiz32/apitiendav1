@@ -5,8 +5,6 @@ import java.util.List;
 import com.principal.apitiendav1.dto.producto.VentaProductoDTO;
 import com.principal.apitiendav1.dto.usuario.UsuarioDTO;
 import com.principal.apitiendav1.entities.EstadoVenta;
-import com.principal.apitiendav1.entities.VentaProductoId;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
