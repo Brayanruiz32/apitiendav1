@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.principal.apitiendav1.dto.usuario.UsuarioDTO;
@@ -23,11 +24,14 @@ public class UsuarioService implements IServices<UsuarioDTO, UsuarioRequestDTO> 
     @Autowired
     private RolRepository rolRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UsuarioDTO actualizarRegistro(Long id, UsuarioRequestDTO datosRegistro) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         usuario.setUsuario(datosRegistro.getUsuario());
-        usuario.setContrasenia(datosRegistro.getContrasenia());
+        usuario.setContrasenia(passwordEncoder.encode(datosRegistro.getContrasenia()));
         //Setear el rol 
         if (datosRegistro.getRol() == null) {
             throw new IllegalArgumentException("No puede ser nulo el Rol");
@@ -54,6 +58,7 @@ public class UsuarioService implements IServices<UsuarioDTO, UsuarioRequestDTO> 
     @Override
     public UsuarioDTO guardarRegistro(UsuarioRequestDTO nuevoRegistro) {
         Usuario nuevoUsuario = modelMapper.map(nuevoRegistro, Usuario.class);
+        nuevoUsuario.setContrasenia(passwordEncoder.encode(nuevoRegistro.getContrasenia()));
         UsuarioDTO usuarioDTO = modelMapper.map(usuarioRepository.save(nuevoUsuario), UsuarioDTO.class);
         return usuarioDTO;
     }
