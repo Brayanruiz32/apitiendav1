@@ -14,8 +14,11 @@ import com.principal.apitiendav1.dto.producto.ProductoDTO;
 import com.principal.apitiendav1.dto.producto.ProductoRequestDTO;
 import com.principal.apitiendav1.services.ProductoService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/producto")
+@Tag(name = "CRUD PRODUCTO", description = "CRUD de productos")
 public class ProductoController implements IControllers<ProductoDTO, ProductoRequestDTO> {
 
     @Autowired

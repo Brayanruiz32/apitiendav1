@@ -16,8 +16,11 @@ import com.principal.apitiendav1.dto.categoria.CategoriaDTO;
 import com.principal.apitiendav1.dto.categoria.CategoriaRequestDTO;
 import com.principal.apitiendav1.services.CategoriaService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/categoria")
+@Tag(name = "CRUD CATEGORIA", description = "Metodos CRUD de categoria")
 public class CategoriaController implements IControllers<CategoriaDTO, CategoriaRequestDTO> {
 
     @Autowired

@@ -14,8 +14,11 @@ import com.principal.apitiendav1.dto.venta.VentaDTO;
 import com.principal.apitiendav1.dto.venta.VentaRequestDTO;
 import com.principal.apitiendav1.services.VentaService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/venta")
+@Tag(name = "CRUD VENTA", description = "CRUD de ventas")
 public class VentaController implements IControllers<VentaDTO, VentaRequestDTO> {
 
     @Autowired

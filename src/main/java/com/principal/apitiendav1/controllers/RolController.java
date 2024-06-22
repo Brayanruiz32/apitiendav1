@@ -14,8 +14,11 @@ import com.principal.apitiendav1.dto.rol.RolDTO;
 import com.principal.apitiendav1.dto.rol.RolRequestDTO;
 import com.principal.apitiendav1.services.RolService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/rol")
+@Tag(name = "CRUD ROLES", description = "CRUD de roles")
 public class RolController implements IControllers<RolDTO, RolRequestDTO> {
 
     @Autowired

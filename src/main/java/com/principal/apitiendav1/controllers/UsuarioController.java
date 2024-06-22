@@ -14,8 +14,11 @@ import com.principal.apitiendav1.dto.usuario.UsuarioDTO;
 import com.principal.apitiendav1.dto.usuario.UsuarioRequestDTO;
 import com.principal.apitiendav1.services.UsuarioService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/usuario")
+@Tag(name = "CRUD USUARIO", description = "CRUD de usuarios")
 public class UsuarioController implements IControllers<UsuarioDTO, UsuarioRequestDTO> {
 
     @Autowired
