@@ -1,5 +1,6 @@
 package com.principal.apitiendav1.config;
 
+import org.hibernate.mapping.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,15 +32,14 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(http -> {
             http.requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll();
-            //http.requestMatchers("/usuario").hasAnyRole("ADMIN");
-            http.requestMatchers(HttpMethod.POST, "/usuario/**").permitAll();
-            // http.requestMatchers(HttpMethod.DELETE, "/usuario/**").hasAnyAuthority("ADMIN");
-            http.requestMatchers("/usuario/**").hasAnyRole("ADMIN");
-            http.requestMatchers(HttpMethod.POST, "/rol/**").hasAnyRole("ADMIN");
-            http.requestMatchers(HttpMethod.PUT, "/rol/**").hasAnyRole("ADMIN");
-            http.requestMatchers(HttpMethod.DELETE, "/rol/**").hasAnyRole("ADMIN");
-            http.requestMatchers("/rol/**").permitAll();
-
+            String[] roles =  {"DESARROLLADOR", "ADMINISTRADOR"};
+            String[] paths = {"/rol/**", "/usuario/**", "/categoria/**", "/producto/**", "/venta/**"};
+            for (String path : paths) {
+                http.requestMatchers(HttpMethod.GET, path).hasAnyRole("CLIENTE", "INVITADO");
+                http.requestMatchers(HttpMethod.POST, path).hasAnyRole(roles);
+                http.requestMatchers(HttpMethod.PUT, path).hasAnyRole(roles);
+                http.requestMatchers(HttpMethod.DELETE, path).hasAnyRole(roles);
+            }
         })
         .build();
     }
