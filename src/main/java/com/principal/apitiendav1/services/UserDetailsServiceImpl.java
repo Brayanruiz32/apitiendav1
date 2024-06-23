@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import com.principal.apitiendav1.entities.Usuario;
 import com.principal.apitiendav1.repositories.UsuarioRepository;
 
-import jakarta.persistence.EntityNotFoundException;
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
