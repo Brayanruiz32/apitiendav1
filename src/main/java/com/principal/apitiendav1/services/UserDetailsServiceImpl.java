@@ -10,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,15 +28,56 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        
         Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UsernameNotFoundException("No existe el usuario"));
+
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_".concat(usuario.getRol().getNombre())));
-        User user = new User(usuario.getUsuario(), usuario.getContrasenia(), authorities);
-        return user;
+        return new org.springframework.security.core.userdetails.User(usuario.getUsuario(), 
+        usuario.getContrasenia(), authorities);
     }
 
+    
+    public ResponseLogin loginUser(UsuarioLoginDTO usuarioLoginDTO){
+
+        String usuario = usuarioLoginDTO.getUsuario();
+        String contrasenia = usuarioLoginDTO.getContrasenia();
+        System.out.println(usuarioLoginDTO.toString());
+        System.out.println(usuario);
+        System.out.println(contrasenia);
+
+        Authentication authentication = this.authenticate(usuario, contrasenia);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = jwtUtils.createToken(authentication);
+
+        ResponseLogin responseLogin = new ResponseLogin(usuario, token);
+
+        return responseLogin;
+    }
+
+    private Authentication authenticate(String usuario, String contrasenia) {
+        
+        UserDetails userDetails = loadUserByUsername(usuario);
+   
+        if (userDetails == null) {
+            throw new UsernameNotFoundException("No se encuentra el usuario");
+        }
+
+        if (!passwordEncoder.matches(contrasenia, userDetails.getPassword())) {
+            throw new BadCredentialsException("Las credenciales son incorrectas");
+        }
+        return new UsernamePasswordAuthenticationToken(usuario, contrasenia, userDetails.getAuthorities());
+    }
 
 
 }

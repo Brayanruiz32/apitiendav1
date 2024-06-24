@@ -37,9 +37,16 @@ public class SecurityConfig {
         .httpBasic(Customizer.withDefaults())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(http -> {
-            // http.requestMatchers(HttpMethod.GET, "swagger-ui.html").permitAll();
-            // http.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
-            http.requestMatchers(HttpMethod.POST, "auth/login").permitAll();
+            http.requestMatchers(HttpMethod.GET, "swagger-ui.html").permitAll();
+            http.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
+            String[] paths = {"/categoria/**", "/producto/**", "/usuario/**", "/rol/**", "/venta/**"};
+            String[] roles = {"ADMINISTRATIVO", "DESARROLLADOR"};
+            for (String path : paths) {
+                http.requestMatchers(HttpMethod.GET, path).hasAnyRole("CLIENTE","INVITADO");
+                http.requestMatchers(HttpMethod.POST, path).hasAnyRole(roles);
+                http.requestMatchers(HttpMethod.PUT, path).hasAnyRole(roles);
+                http.requestMatchers(HttpMethod.DELETE, path).hasAnyRole(roles);
+            }
             http.anyRequest().authenticated();
         })
         .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
@@ -53,10 +60,12 @@ public class SecurityConfig {
 
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsServiceImpl UserDetailsService){
+    public AuthenticationProvider authenticationProvider(UserDetailsServiceImpl userDetailsService){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(UserDetailsService);
+
+        provider.setUserDetailsService(userDetailsService);
+   
         return provider;
     }
 

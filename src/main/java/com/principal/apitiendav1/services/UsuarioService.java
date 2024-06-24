@@ -36,8 +36,6 @@ public class UsuarioService implements IServices<UsuarioDTO, UsuarioRequestDTO> 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtUtils jwtUtils;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
@@ -93,34 +91,5 @@ public class UsuarioService implements IServices<UsuarioDTO, UsuarioRequestDTO> 
     }
 
     
-    
-    public ResponseLogin loginUser(UsuarioLoginDTO usuarioLoginDTO){
-
-        String usuario = usuarioLoginDTO.getUsuario();
-        String contrasenia = usuarioLoginDTO.getContrasenia();
-
-        Authentication authentication = this.authenticate(usuario, contrasenia);
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String token = jwtUtils.createToken(authentication);
-
-        ResponseLogin responseLogin = new ResponseLogin(usuario, token);
-
-        return responseLogin;
-    }
-
-    private Authentication authenticate(String usuario, String contrasenia) {
-        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(usuario);
-
-        if (userDetails == null) {
-            throw new UsernameNotFoundException("No se encuentra el usuario");
-        }
-
-        if (passwordEncoder.matches(contrasenia, userDetails.getPassword())) {
-            throw new BadCredentialsException("Las credenciales son incorrectas");
-        }
-        return new UsernamePasswordAuthenticationToken(usuario, contrasenia, userDetails.getAuthorities());
-    }
 
 }
