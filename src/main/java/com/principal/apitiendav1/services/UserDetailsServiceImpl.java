@@ -4,15 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.principal.apitiendav1.dto.usuario.ResponseLogin;
+import com.principal.apitiendav1.dto.usuario.UsuarioLoginDTO;
 import com.principal.apitiendav1.entities.Usuario;
 import com.principal.apitiendav1.repositories.UsuarioRepository;
+import com.principal.apitiendav1.utils.JwtUtils;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -29,6 +38,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return user;
     }
 
-    
+
 
 }

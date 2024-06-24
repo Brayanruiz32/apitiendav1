@@ -3,7 +3,6 @@ package com.principal.apitiendav1.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,13 +10,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.principal.apitiendav1.dto.usuario.ResponseLogin;
 import com.principal.apitiendav1.dto.usuario.UsuarioDTO;
-import com.principal.apitiendav1.dto.usuario.UsuarioLoginDTO;
 import com.principal.apitiendav1.dto.usuario.UsuarioRequestDTO;
 import com.principal.apitiendav1.services.UsuarioService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -64,8 +60,5 @@ public class UsuarioController implements IControllers<UsuarioDTO, UsuarioReques
         return usuarioService.listarRegistrosDisponibles();
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<ResponseLogin> loginUser(@RequestBody UsuarioLoginDTO userLogin){
-        return new ResponseEntity<>(null);
-    }
+
 }

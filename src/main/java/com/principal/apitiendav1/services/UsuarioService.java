@@ -4,15 +4,24 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.principal.apitiendav1.dto.usuario.ResponseLogin;
 import com.principal.apitiendav1.dto.usuario.UsuarioDTO;
+import com.principal.apitiendav1.dto.usuario.UsuarioLoginDTO;
 import com.principal.apitiendav1.dto.usuario.UsuarioRequestDTO;
 import com.principal.apitiendav1.entities.Rol;
 import com.principal.apitiendav1.entities.Usuario;
 import com.principal.apitiendav1.repositories.RolRepository;
 import com.principal.apitiendav1.repositories.UsuarioRepository;
+import com.principal.apitiendav1.utils.JwtUtils;
 
 import jakarta.persistence.EntityNotFoundException;
 @Service
@@ -26,6 +35,12 @@ public class UsuarioService implements IServices<UsuarioDTO, UsuarioRequestDTO> 
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Override
     public UsuarioDTO actualizarRegistro(Long id, UsuarioRequestDTO datosRegistro) {
@@ -78,5 +93,34 @@ public class UsuarioService implements IServices<UsuarioDTO, UsuarioRequestDTO> 
     }
 
     
+    
+    public ResponseLogin loginUser(UsuarioLoginDTO usuarioLoginDTO){
+
+        String usuario = usuarioLoginDTO.getUsuario();
+        String contrasenia = usuarioLoginDTO.getContrasenia();
+
+        Authentication authentication = this.authenticate(usuario, contrasenia);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = jwtUtils.createToken(authentication);
+
+        ResponseLogin responseLogin = new ResponseLogin(usuario, token);
+
+        return responseLogin;
+    }
+
+    private Authentication authenticate(String usuario, String contrasenia) {
+        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(usuario);
+
+        if (userDetails == null) {
+            throw new UsernameNotFoundException("No se encuentra el usuario");
+        }
+
+        if (passwordEncoder.matches(contrasenia, userDetails.getPassword())) {
+            throw new BadCredentialsException("Las credenciales son incorrectas");
+        }
+        return new UsernamePasswordAuthenticationToken(usuario, contrasenia, userDetails.getAuthorities());
+    }
 
 }
