@@ -2,9 +2,11 @@ package com.principal.apitiendav1.utils;
 
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
@@ -32,7 +34,7 @@ public class JwtUtils {
 
         String username = authentication.getPrincipal().toString();
 
-        String rol = authentication.getAuthorities().toString();
+        String rol = authentication.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.joining(","));
         
         String token = JWT.create()
         .withIssuer(userGenerator)
@@ -50,7 +52,7 @@ public class JwtUtils {
 
     //funcion para decodificar el token
     public DecodedJWT validateToken(String token){
-        System.out.println(token);
+    
     
         try {
             Algorithm algorithm = Algorithm.HMAC256(this.privateKey);

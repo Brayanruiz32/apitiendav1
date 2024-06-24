@@ -47,7 +47,7 @@ public class SecurityConfig {
                 http.requestMatchers(HttpMethod.PUT, path).hasAnyRole(roles);
                 http.requestMatchers(HttpMethod.DELETE, path).hasAnyRole(roles);
             }
-            http.anyRequest().authenticated();
+           
         })
         .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
         .build();

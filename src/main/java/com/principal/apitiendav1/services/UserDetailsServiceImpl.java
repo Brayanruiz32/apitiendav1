@@ -50,9 +50,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         String usuario = usuarioLoginDTO.getUsuario();
         String contrasenia = usuarioLoginDTO.getContrasenia();
-        System.out.println(usuarioLoginDTO.toString());
-        System.out.println(usuario);
-        System.out.println(contrasenia);
 
         Authentication authentication = this.authenticate(usuario, contrasenia);
 
